@@ -4,7 +4,7 @@ drink_list = [
 		"name": "Gin & Tonic",
 		"ingredients": {
 			"gin": 50,
-			"tonic": 150
+			"tonic": 149
 		}
 	}, {
 		"name": "Rum & Coke",
