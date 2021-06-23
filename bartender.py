@@ -228,18 +228,14 @@ class Bartender(MenuDelegate):
 
 	def shutdown(self):
 		shutdowntext = "Shutdown takes 10 seconds. Bye!"
+		self.draw.rectangle([0,0,self.screen_width,self.screen_height], fill="BLACK",)
+		self.draw.text((0,12), shutdowntext, fill = "BLUE", font = self.font)
 		OLED.Clear_Screen()
-		self.draw.rectangle((0,0,self.screen_width,self.screen_height), outline=0, fill=0)
+		OLED.Display_Image(self.image)
+		time.sleep(5)
 
-		words_list = WRAPPER.wrap(text=shutdowntext)
-		TextNew = ''
-		for ii in words_list[:-1]:
-			TextNew = TextNew + ii + "\n"
-		TextNew += words_list[-1]
-		self.draw.text((0,10),str(TextNew), font=self.font, fill=255)
-		self.image.show()
-		time.sleep(5);
-
+		OLED.Clear_Screen()
+		
 		#Clean shutdown device
 		subprocess.Popen(['shutdown','-h','now'])
 
