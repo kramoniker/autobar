@@ -41,6 +41,12 @@ drink_list = [
 			"oj": 150
 		}
 	}, {
+		"name": "Vodka Lemonade",
+		"ingredients": {
+			"vodka": 50,
+			"lemonade": 150
+		}
+	}, {
 		"name": "Tequila Sunrise",
 		"ingredients": {
 			"tequila": 50,
@@ -58,4 +64,5 @@ drink_options = [
 	{"name": "Coke", "value": "coke"},
 	{"name": "Orange Juice", "value": "oj"},
 	{"name": "Margarita Mix", "value": "mmix"}
+	{"name": "Lemonade", "value": "lemonade"}
 ]

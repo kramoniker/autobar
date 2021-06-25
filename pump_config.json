@@ -2,7 +2,7 @@
     "pump_1": {
         "name": "Pump 1",
         "pin": 17,
-        "value": "mmix"
+        "value": "vodka"
     },
     "pump_2": {
         "name": "Pump 2",
@@ -27,6 +27,6 @@
     "pump_6": {
         "name": "Pump 6",
         "pin": 25,
-        "value": "oj"
+        "value": "lemonade"
     }
 }
