@@ -289,7 +289,7 @@ class Bartender(MenuDelegate):
 	def progressBar(self, waitTime):
 		interval = waitTime / 100.0
 		for x in range(1, 101):
-			self.draw.rectangle((0,0,self.screen_width,self.screen_height), outline=0, fill=0)
+			OLED.Clear_Screen()
 			self.updateProgressBar(x, y=35)
 			OLED.Display_Image(self.image)
 			time.sleep(interval)
