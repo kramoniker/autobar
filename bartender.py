@@ -291,7 +291,7 @@ class Bartender(MenuDelegate):
 		for x in range(1, 101):
 			self.draw.rectangle((0,0,self.screen_width,self.screen_height), outline=0, fill=0)
 			self.updateProgressBar(x, y=35)
-			self.image.show()
+			OLED.Display_Image(self.image)
 			time.sleep(interval)
 
 	def makeDrink(self, drink, ingredients):
