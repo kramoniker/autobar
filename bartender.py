@@ -382,8 +382,8 @@ class Bartender(MenuDelegate):
 			try: 
 
 				while True:
-					if (time.time() - startTime > 30)
-					    OLED.Clear_Screen()
+					if ((time.time() - startTime) > 30): 
+						OLED.Clear_Screen()
 					letter = input(">")
 					if letter == "l":
 						startTime = time.time()
