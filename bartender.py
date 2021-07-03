@@ -33,6 +33,13 @@ LEFT_PIN_BOUNCE = 200
 RIGHT_BTN_PIN = 5
 RIGHT_PIN_BOUNCE = 200
 
+STATE_INITIALIZING = 0
+STATE_RUNNING      = 1
+STATE_SLEEPING     = 2
+
+machineState       = STATE_INITIALIZING
+startTime          = time.time()
+
 NUMBER_NEOPIXELS = 45
 NEOPIXEL_DATA_PIN = 26
 NEOPIXEL_CLOCK_PIN = 6
@@ -88,6 +95,8 @@ class Bartender(MenuDelegate):
 
 		# setup pixels:
 		print ("Done initializing")
+
+		machineState = STATE_RUNNING
 
 	@staticmethod
 	def readPumpConfiguration():
@@ -224,7 +233,7 @@ class Bartender(MenuDelegate):
 		self.menuContext.showMenu()
 
 		# sleep for a couple seconds to make sure the interrupts don't get triggered
-		time.sleep(2);
+		time.sleep(2)
 
 	def shutdown(self):
 		shutdowntext = "Shutdown takes 10 seconds. Bye!"
@@ -346,7 +355,12 @@ class Bartender(MenuDelegate):
 		print("LEFT_BTN pressed")
 		if not self.running:
 			self.running = True
-			self.menuContext.advance()
+			self.startTime = time.time()
+			if self.machineState == STATE_SLEEPING:
+				self.machineState = STATE_RUNNING
+				self.menuContext.currentMenu()
+			else:	
+				self.menuContext.advance()
 			print("Finished processing button press")
 		self.running = False
 
@@ -354,10 +368,14 @@ class Bartender(MenuDelegate):
 		print("RIGHT_BTN pressed")
 		if not self.running:
 			self.running = True
-			self.menuContext.select()
+			self.startTime = time.time()
+			if self.machineState == STATE_SLEEPING:
+				self.machineState = STATE_RUNNING
+				self.menuContext.currentMenu()
+			else:
+				self.menuContext.select()
 			print("Finished processing button press")
-			self.running = 2
-			print("Starting button timeout")
+		self.running = False
 
 	def updateProgressBar(self, percent, x=15, y=15):
 		height = 10
@@ -376,6 +394,7 @@ class Bartender(MenuDelegate):
 		self.startInterrupts()
 
 		startTime = time.time()
+		
 		# main loop
 		try:
 
@@ -383,14 +402,13 @@ class Bartender(MenuDelegate):
 
 				while True:
 					if ((time.time() - startTime) > 30): 
+						self.machineState = STATE_SLEEPING
 						OLED.Clear_Screen()
-					letter = input(">")
-					if letter == "l":
-						startTime = time.time()
-						self.left_btn(False)
-					if letter == "r":
-						startTime = time.time()
-						self.right_btn(False)
+#					letter = input(">")
+#					if letter == "l":
+#						self.left_btn(False)
+#					if letter == "r":
+#						self.right_btn(False)
 
 			except EOFError:
 				while True:
@@ -412,7 +430,3 @@ class Bartender(MenuDelegate):
 bartender = Bartender()
 bartender.buildMenu(drink_list, drink_options)
 bartender.run()
-
-
-
-
