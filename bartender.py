@@ -374,16 +374,22 @@ class Bartender(MenuDelegate):
 
 	def run(self):
 		self.startInterrupts()
+
+		startTime = time.time()
 		# main loop
 		try:
 
 			try: 
 
 				while True:
+					if (time.time() - startTime > 30)
+					    OLED.Clear_Screen()
 					letter = input(">")
 					if letter == "l":
+						startTime = time.time()
 						self.left_btn(False)
 					if letter == "r":
+						startTime = time.time()
 						self.right_btn(False)
 
 			except EOFError:
