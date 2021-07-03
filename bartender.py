@@ -404,6 +404,10 @@ class Bartender(MenuDelegate):
 					if ((time.time() - startTime) > 30): 
 						self.machineState = STATE_SLEEPING
 						OLED.Clear_Screen()
+					if not GPIO.input(LEFT_BTN_PIN):
+						self.left_btn(false)
+					if not GPIO.input(RIGHT_BTN_PIN):
+						self.right_btn(false)
 #					letter = input(">")
 #					if letter == "l":
 #						self.left_btn(False)
