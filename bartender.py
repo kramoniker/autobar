@@ -312,6 +312,7 @@ class Bartender(MenuDelegate):
 	def makeDrink(self, drink, ingredients):
 		# cancel any button presses while the drink is being made
 		# self.stopInterrupts()
+		self.prev_machine_state = self.machine_state
 		self.machine_state = STATE_RUNNING
 
 		# launch a thread to control lighting
@@ -359,36 +360,38 @@ class Bartender(MenuDelegate):
 		self.machine_state = STATE_WAITING
 
 	def left_btn(self, ctx):
-		self.prev_machine_state = self.machine_state
-		self.machine_state = STATE_RUNNING
-		time.sleep(0.05)
-		self.start_time = time.time()
-		if (self.prev_machine_state == STATE_SLEEPING):
-			self.menuContext.showMenu()
-			print("LEFT button press woke from sleep")
-		elif (self.prev_machine_state == STATE_WAITING):
-			self.menuContext.advance()
-			print("LEFT button press advanced menu")
-		else:
-			print("ignored LEFT button press")
-		self.machine_state = STATE_WAITING
-		self.prev_machine_state = STATE_WAITING
+		if self.machine_state != STATE_RUNNING:
+			self.prev_machine_state = self.machine_state
+			self.machine_state = STATE_RUNNING
+			time.sleep(0.05)
+			self.start_time = time.time()
+			if (self.prev_machine_state == STATE_SLEEPING):
+				self.menuContext.showMenu()
+				print("LEFT button press woke from sleep")
+			elif (self.prev_machine_state == STATE_WAITING):
+				self.menuContext.advance()
+				print("LEFT button press advanced menu")
+			else:
+				print("ignored LEFT button press")
+			self.machine_state = STATE_WAITING
+			self.prev_machine_state = STATE_WAITING
 
 	def right_btn(self, ctx):
-		self.prev_machine_state = self.machine_state
-		self.machine_state = STATE_RUNNING
-		time.sleep(0.05)
-		self.start_time = time.time()
-		if (self.prev_machine_state == STATE_SLEEPING):
-			self.menuContext.showMenu()
-			print("RIGHT button press woke from sleep")
-		elif (self.prev_machine_state == STATE_WAITING):
-			self.menuContext.select()
-			print("RIGHT button press selected menu item")
-		else:
-			print("ignored RIGHT button press")
-		self.machine_state = STATE_WAITING
-		self.prev_machine_state = STATE_WAITING
+		if self.machine_state != STATE_RUNNING:
+			self.prev_machine_state = self.machine_state
+			self.machine_state = STATE_RUNNING
+			time.sleep(0.05)
+			self.start_time = time.time()
+			if (self.prev_machine_state == STATE_SLEEPING):
+				self.menuContext.showMenu()
+				print("RIGHT button press woke from sleep")
+			elif (self.prev_machine_state == STATE_WAITING):
+				self.menuContext.select()
+				print("RIGHT button press selected menu item")
+			else:
+				print("ignored RIGHT button press")
+			self.machine_state = STATE_WAITING
+			self.prev_machine_state = STATE_WAITING
 
 	def updateProgressBar(self, percent, x=15, y=15):
 		height = 10
