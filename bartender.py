@@ -35,7 +35,8 @@ RIGHT_PIN_BOUNCE = 200
 
 STATE_INITIALIZING = 0
 STATE_RUNNING      = 1
-STATE_SLEEPING     = 2
+STATE_WAITING      = 2
+STATE_SLEEPING     = 3
 SLEEP_TIMEOUT      = 30
 
 machine_state       = STATE_INITIALIZING
@@ -357,29 +358,27 @@ class Bartender(MenuDelegate):
 
 	def left_btn(self, ctx):
 		print("LEFT_BTN pressed")
-		if not self.running:
-			self.running = True
-			if self.machine_state == STATE_SLEEPING:
-				self.machine_state = STATE_RUNNING
-				self.menuContext.advance()
-			else:	
-				self.menuContext.advance()
-			print("Finished processing button press")
+		prev_machine_state = self.machine_state
+		self.machine_state = STATE_RUNNING
 		self.start_time = time.time()
-		self.running = False
+		if (prev_machine_state == STATE_SLEEPING) or (prev_machine_state == STATE_WAITING):
+			self.menuContext.advance()
+		print("Finished processing button press")
+		self.machine_state = STATE_WAITING
+		
+		self.machine_state = STATE_WAITING
 
 	def right_btn(self, ctx):
 		print("RIGHT_BTN pressed")
-		if not self.running:
-			self.running = True
-			if self.machine_state == STATE_SLEEPING:
-				self.machine_state = STATE_RUNNING
-				self.menuContext.advance()
-			else:
-				self.menuContext.select()
-			print("Finished processing button press")
+		prev_machine_state = self.machine_state
+		self.machine_state = STATE_RUNNING
 		self.start_time = time.time()
-		self.running = False
+		if (prev_machine_state == STATE_SLEEPING):
+			self.menuContext.advance()
+		elif (prev_machine_state == STATE_WAITING):
+			self.menuContext.select()
+		print("Finished processing button press")
+		self.machine_state = STATE_WAITING
 
 	def updateProgressBar(self, percent, x=15, y=15):
 		height = 10
@@ -395,37 +394,16 @@ class Bartender(MenuDelegate):
 				self.draw.point((x + p_loc, h + y), fill=255)
 
 	def run(self):
-#		self.startInterrupts()
-
 		self.start_time = time.time()
 		
 		# main loop
 		try:
 
-			try: 
-
-				while True:
-					if ((time.time() - self.start_time) > SLEEP_TIMEOUT) and (self.machine_state == STATE_RUNNING): 
-						self.machine_state = STATE_SLEEPING
-						OLED.Clear_Screen()
-#					if GPIO.event_detected(LEFT_BTN_PIN, bouncetime=200):
-#						self.left_btn(False)
-#					if GPIO.event_detected(RIGHT_BTN_PIN, bouncetime=200):
-#						self.right_btn(False)
-#					letter = input(">")
-#					if letter == "l":
-#						self.left_btn(False)
-#					if letter == "r":
-#						self.right_btn(False)
-
-			except EOFError:
-				while True:
-					time.sleep(0.1)
-					if self.running not in (True,False):
-						self.running -= 0.1
-						if self.running == 0:
-							self.running = False
-							print("Finished button timeout")
+			while True:
+				# disable OLED screen if no activity for SLEEP_TIMEOUT seconds to prevent burning out screen
+				if ((time.time() - self.start_time) > SLEEP_TIMEOUT) and (self.machine_state != STATE_SLEEPING): 
+					self.machine_state = STATE_SLEEPING
+					OLED.Clear_Screen()
 
 		except KeyboardInterrupt:
 			OLED.Clear_Screen()
