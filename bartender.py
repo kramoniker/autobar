@@ -37,8 +37,8 @@ STATE_INITIALIZING = 0
 STATE_RUNNING      = 1
 STATE_SLEEPING     = 2
 
-machineState       = STATE_INITIALIZING
-startTime          = time.time()
+machine_state       = STATE_INITIALIZING
+start_time          = time.time()
 
 NUMBER_NEOPIXELS = 45
 NEOPIXEL_DATA_PIN = 26
@@ -78,6 +78,9 @@ class Bartender(MenuDelegate):
 		GPIO.setup(self.btn1Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 		GPIO.setup(self.btn2Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+		GPIO.add_event_detect(LEFT_BTN_PIN, GPIO.FALLING)
+		GPIO.add_event_detect(RIGHT_BTN_PIN, GPIO.FALLING)
+
 		# configure screen
 		spi_bus = 0
 		spi_device = 0
@@ -96,7 +99,7 @@ class Bartender(MenuDelegate):
 		# setup pixels:
 		print ("Done initializing")
 
-		machineState = STATE_RUNNING
+		self.machine_state = STATE_RUNNING
 
 	@staticmethod
 	def readPumpConfiguration():
@@ -355,9 +358,9 @@ class Bartender(MenuDelegate):
 		print("LEFT_BTN pressed")
 		if not self.running:
 			self.running = True
-			self.startTime = time.time()
-			if machineState == STATE_SLEEPING:
-				machineState = STATE_RUNNING
+			self.start_time = time.time()
+			if self.machine_state == STATE_SLEEPING:
+				self.machine_state = STATE_RUNNING
 				self.menuContext.currentMenu()
 			else:	
 				self.menuContext.advance()
@@ -368,9 +371,9 @@ class Bartender(MenuDelegate):
 		print("RIGHT_BTN pressed")
 		if not self.running:
 			self.running = True
-			self.startTime = time.time()
-			if machineState == STATE_SLEEPING:
-				machineState = STATE_RUNNING
+			self.start_time = time.time()
+			if self.machine_state == STATE_SLEEPING:
+				self.machine_state = STATE_RUNNING
 				self.menuContext.currentMenu()
 			else:
 				self.menuContext.select()
@@ -393,7 +396,7 @@ class Bartender(MenuDelegate):
 	def run(self):
 		self.startInterrupts()
 
-		startTime = time.time()
+		start_time = time.time()
 		
 		# main loop
 		try:
@@ -401,12 +404,12 @@ class Bartender(MenuDelegate):
 			try: 
 
 				while True:
-					if ((time.time() - startTime) > 30): 
-						self.machineState = STATE_SLEEPING
+					if ((time.time() - start_time) > 30): 
+						self.machine_state = STATE_SLEEPING
 						OLED.Clear_Screen()
-					if not GPIO.input(LEFT_BTN_PIN):
+					if GPIO.event_detected(LEFT_BTN_PIN):
 						self.left_btn(False)
-					if not GPIO.input(RIGHT_BTN_PIN):
+					if GPIO.event_detected(RIGHT_BTN_PIN):
 						self.right_btn(False)
 #					letter = input(">")
 #					if letter == "l":
