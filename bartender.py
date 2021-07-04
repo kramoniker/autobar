@@ -356,8 +356,8 @@ class Bartender(MenuDelegate):
 		if not self.running:
 			self.running = True
 			self.startTime = time.time()
-			if self.machineState == STATE_SLEEPING:
-				self.machineState = STATE_RUNNING
+			if machineState == STATE_SLEEPING:
+				machineState = STATE_RUNNING
 				self.menuContext.currentMenu()
 			else:	
 				self.menuContext.advance()
@@ -369,8 +369,8 @@ class Bartender(MenuDelegate):
 		if not self.running:
 			self.running = True
 			self.startTime = time.time()
-			if self.machineState == STATE_SLEEPING:
-				self.machineState = STATE_RUNNING
+			if machineState == STATE_SLEEPING:
+				machineState = STATE_RUNNING
 				self.menuContext.currentMenu()
 			else:
 				self.menuContext.select()
@@ -405,9 +405,9 @@ class Bartender(MenuDelegate):
 						self.machineState = STATE_SLEEPING
 						OLED.Clear_Screen()
 					if not GPIO.input(LEFT_BTN_PIN):
-						self.left_btn(false)
+						self.left_btn(False)
 					if not GPIO.input(RIGHT_BTN_PIN):
-						self.right_btn(false)
+						self.right_btn(False)
 #					letter = input(">")
 #					if letter == "l":
 #						self.left_btn(False)
