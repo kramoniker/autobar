@@ -365,7 +365,6 @@ class Bartender(MenuDelegate):
 		if self.machine_state != STATE_RUNNING:
 			self.prev_machine_state = self.machine_state
 			self.machine_state = STATE_RUNNING
-			time.sleep(0.05)
 			self.start_time = time.time()
 			if (self.prev_machine_state == STATE_SLEEPING):
 				self.menuContext.showMenu()
@@ -382,7 +381,6 @@ class Bartender(MenuDelegate):
 		if self.machine_state != STATE_RUNNING:
 			self.prev_machine_state = self.machine_state
 			self.machine_state = STATE_RUNNING
-			time.sleep(0.05)
 			self.start_time = time.time()
 			if (self.prev_machine_state == STATE_SLEEPING):
 				self.menuContext.showMenu()
