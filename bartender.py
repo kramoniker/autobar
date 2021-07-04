@@ -359,7 +359,6 @@ class Bartender(MenuDelegate):
 		print("LEFT_BTN pressed")
 		if not self.running:
 			self.running = True
-			self.start_time = time.time()
 			if self.machine_state == STATE_SLEEPING:
 				self.machine_state = STATE_RUNNING
 				self.menuContext.advance()
@@ -372,7 +371,6 @@ class Bartender(MenuDelegate):
 		print("RIGHT_BTN pressed")
 		if not self.running:
 			self.running = True
-			self.start_time = time.time()
 			if self.machine_state == STATE_SLEEPING:
 				self.machine_state = STATE_RUNNING
 				self.menuContext.advance()
