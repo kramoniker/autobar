@@ -103,7 +103,7 @@ class Bartender(MenuDelegate):
 		# setup pixels:
 		print ("Done initializing")
 
-		self.machine_state = STATE_RUNNING
+		self.machine_state = STATE_WAITING
 
 	@staticmethod
 	def readPumpConfiguration():
@@ -241,6 +241,8 @@ class Bartender(MenuDelegate):
 
 		# sleep for a couple seconds to make sure the interrupts don't get triggered
 		time.sleep(2)
+
+		self.machine_state = STATE_WAITING
 
 	def shutdown(self):
 		shutdowntext = "Shutdown takes 10 seconds. Bye!"
