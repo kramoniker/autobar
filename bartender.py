@@ -359,6 +359,7 @@ class Bartender(MenuDelegate):
 	def left_btn(self, ctx):
 		print("LEFT_BTN pressed")
 		prev_machine_state = self.machine_state
+		time.sleep(0.05)
 		self.machine_state = STATE_RUNNING
 		self.start_time = time.time()
 		if (prev_machine_state == STATE_SLEEPING) or (prev_machine_state == STATE_WAITING):
@@ -371,6 +372,7 @@ class Bartender(MenuDelegate):
 	def right_btn(self, ctx):
 		print("RIGHT_BTN pressed")
 		prev_machine_state = self.machine_state
+		time.sleep(0.05)
 		self.machine_state = STATE_RUNNING
 		self.start_time = time.time()
 		if (prev_machine_state == STATE_SLEEPING):
