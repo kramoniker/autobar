@@ -36,15 +36,18 @@ RIGHT_PIN_BOUNCE = 200
 STATE_UNKNOWN       = "Unknown"
 STATE_INITIALIZING  = "Initializing"
 STATE_RUNNING       = "Running"
-STATE_WAITING       = "Waiting"
+STATE_WAITING       = "Waiting..."
 STATE_SLEEPING      = "Sleeping"
-STATE_POURING       = "Pouring"
+STATE_POURING       = "Pouring..."
 STATE_POUR_FINISHED = "Enjoy your drink!"
+STATE_CLEANING      = "Cleaning..."
+STATE_SHUTDOWN      = "Please wait 10 seconds to power off"
 SLEEP_TIMEOUT       = 30
 
-machine_state       = STATE_INITIALIZING
-prev_machine_state  = STATE_UNKNOWN
-start_time          = time.time()
+machine_state         = STATE_INITIALIZING
+prev_machine_state    = STATE_UNKNOWN
+display_machine_state = STATE_UNKNOWN
+start_time            = time.time()
 
 NUMBER_NEOPIXELS = 45
 NEOPIXEL_DATA_PIN = 26
@@ -70,6 +73,7 @@ WRAPPER = textwrap.TextWrapper(width=13)
 class Bartender(MenuDelegate): 
 	def __init__(self):
 		self.machine_state = STATE_INITIALIZING
+		self.display_machine_state = self.machine_state
 
 		# set the oled screen height
 		self.screen_width = SCREEN_WIDTH
@@ -106,6 +110,7 @@ class Bartender(MenuDelegate):
 		print ("Done initializing")
 
 		self.machine_state = STATE_WAITING
+		self.display_machine_state = STATE_WAITING
 
 	@staticmethod
 	def readPumpConfiguration():
@@ -221,7 +226,8 @@ class Bartender(MenuDelegate):
 
 		# cancel any button presses while the drink is being made
 		# self.stopInterrupts()
-		self.machine_state = STATE_RUNNING
+		self.machine_state = STATE_CLEANING
+		self.display_machine_state = self.machine_state
 
 		for pump in self.pump_configuration.keys():
 			pump_t = threading.Thread(target=self.pour, args=(self.pump_configuration[pump]["pin"], waitTime))
@@ -247,11 +253,8 @@ class Bartender(MenuDelegate):
 		self.machine_state = STATE_WAITING
 
 	def shutdown(self):
-		shutdowntext = "Shutdown takes 10 seconds. Bye!"
-		self.draw.rectangle([0,0,self.screen_width,self.screen_height], fill="BLACK",)
-		self.draw.text((0,12), shutdowntext, fill = "BLUE", font = self.font)
-		OLED.Clear_Screen()
-		OLED.Display_Image(self.image)
+		self.display_machine_state = STATE_SHUTDOWN
+		self.displayMenuItem(menuItem)
 		time.sleep(5)
 
 		OLED.Clear_Screen()
@@ -264,7 +267,7 @@ class Bartender(MenuDelegate):
 		print (menuItem.name)
 		self.draw.rectangle([0,0,self.screen_width,self.screen_height], fill="BLACK",)
 		self.draw.text((0,12), menuItem.name, fill = "BLUE", font = self.font)
-		self.draw.text((0,30), self.machine_state, fill = "ORANGE", font = self.font)
+		self.draw.text((0,30), self.display_machine_state, fill = "ORANGE", font = self.font)
 		OLED.Clear_Screen()
 		OLED.Display_Image(self.image)
 
@@ -319,6 +322,7 @@ class Bartender(MenuDelegate):
 		# self.stopInterrupts()
 		self.prev_machine_state = self.machine_state
 		self.machine_state = STATE_POURING
+		self.display_machine_state = self.machine_state
 
 		# launch a thread to control lighting
 #		lightsThread = threading.Thread(target=self.cycleLights)
@@ -350,12 +354,14 @@ class Bartender(MenuDelegate):
 			thread.join()
 
 		self.machine_state = STATE_POUR_FINISHED
+		self.display_machine_state = self.machine_state
 
 		self.menuContext.showMenu()
 
 		time.sleep(2)
 
 		self.machine_state = STATE_WAITING
+		self.display_machine_state = self.machine_state
 
 		# show the main menu
 		self.menuContext.showMenu()
@@ -373,12 +379,12 @@ class Bartender(MenuDelegate):
 		# reenable interrupts
 		# self.startInterrupts()
 		self.start_time    = time.time()
-		self.machine_state = STATE_WAITING
 
 	def left_btn(self, ctx):
 		if self.machine_state != STATE_RUNNING:
 			self.prev_machine_state = self.machine_state
 			self.machine_state = STATE_RUNNING
+			self.display_machine_state = self.prev_machine_state
 			self.start_time = time.time()
 			if (self.prev_machine_state == STATE_SLEEPING):
 				self.menuContext.showMenu()
@@ -395,6 +401,7 @@ class Bartender(MenuDelegate):
 		if self.machine_state != STATE_RUNNING:
 			self.prev_machine_state = self.machine_state
 			self.machine_state = STATE_RUNNING
+			self.display_machine_state = self.prev_machine_state
 			self.start_time = time.time()
 			if (self.prev_machine_state == STATE_SLEEPING):
 				self.menuContext.showMenu()
@@ -430,6 +437,7 @@ class Bartender(MenuDelegate):
 				# disable OLED screen if no activity for SLEEP_TIMEOUT seconds to prevent burning out screen
 				if ((time.time() - self.start_time) > SLEEP_TIMEOUT) and (self.machine_state != STATE_SLEEPING): 
 					self.machine_state = STATE_SLEEPING
+					self.display_machine_state = self.machine_state
 					OLED.Clear_Screen()
 
 		except KeyboardInterrupt:
