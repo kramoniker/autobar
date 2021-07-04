@@ -33,12 +33,14 @@ LEFT_PIN_BOUNCE = 200
 RIGHT_BTN_PIN = 5
 RIGHT_PIN_BOUNCE = 200
 
-STATE_UNKNOWN      = -1
-STATE_INITIALIZING = 0
-STATE_RUNNING      = 1
-STATE_WAITING      = 2
-STATE_SLEEPING     = 3
-SLEEP_TIMEOUT      = 30
+STATE_UNKNOWN       = "Unknown"
+STATE_INITIALIZING  = "Initializing"
+STATE_RUNNING       = "Running"
+STATE_WAITING       = "Waiting"
+STATE_SLEEPING      = "Sleeping"
+STATE_POURING       = "Pouring"
+STATE_POUR_FINISHED = "Enjoy your drink!"
+SLEEP_TIMEOUT       = 30
 
 machine_state       = STATE_INITIALIZING
 prev_machine_state  = STATE_UNKNOWN
@@ -229,8 +231,10 @@ class Bartender(MenuDelegate):
 		for thread in pumpThreads:
 			thread.start()
 
-		# start the progress bar
-		self.progressBar(waitTime)
+		# start the progress bar - something isn't right with the progress bar. it lasts sigificantly longer than the pumping
+#		self.progressBar(waitTime)
+
+		self.
 
 		# wait for threads to finish
 		for thread in pumpThreads:
@@ -262,6 +266,7 @@ class Bartender(MenuDelegate):
 		print (menuItem.name)
 		self.draw.rectangle([0,0,self.screen_width,self.screen_height], fill="BLACK",)
 		self.draw.text((0,12), menuItem.name, fill = "BLUE", font = self.font)
+		self.draw.text((0,30), self.machine_state, fill = "ORANGE", font = self.font)
 		OLED.Clear_Screen()
 		OLED.Display_Image(self.image)
 
@@ -305,7 +310,7 @@ class Bartender(MenuDelegate):
 		GPIO.output(pin, GPIO.HIGH)
 
 	def progressBar(self, waitTime):
-		interval = waitTime / 1000
+		interval = waitTime / 100
 		for x in range(1, 101):
 			self.updateProgressBar(x, y=35)
 			OLED.Display_Image(self.image)
@@ -338,12 +343,17 @@ class Bartender(MenuDelegate):
 			thread.start()
 
 		# start the progress bar
-		print("maxtime: " + str(maxTime))
-		self.progressBar(maxTime)
+#		print("maxtime: " + str(maxTime))
+#		self.progressBar(maxTime)
+		self.menuContext.showMenu()
 
 		# wait for threads to finish
 		for thread in pumpThreads:
 			thread.join()
+
+		self.machine_state.STATE_POUR_FINISHED
+
+		time.sleep(2)
 
 		# show the main menu
 		self.menuContext.showMenu()
