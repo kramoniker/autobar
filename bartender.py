@@ -387,6 +387,7 @@ class Bartender(MenuDelegate):
 			self.display_machine_state = self.prev_machine_state
 			self.start_time = time.time()
 			if (self.prev_machine_state == STATE_SLEEPING):
+				self.display_machine_state == STATE_WAITING
 				self.menuContext.showMenu()
 				print("LEFT button press woke from sleep")
 			elif (self.prev_machine_state == STATE_WAITING):
@@ -404,6 +405,7 @@ class Bartender(MenuDelegate):
 			self.display_machine_state = self.prev_machine_state
 			self.start_time = time.time()
 			if (self.prev_machine_state == STATE_SLEEPING):
+				self.display_machine_state = STATE_WAITING
 				self.menuContext.showMenu()
 				print("RIGHT button press woke from sleep")
 			elif (self.prev_machine_state == STATE_WAITING):
