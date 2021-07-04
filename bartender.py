@@ -404,7 +404,7 @@ class Bartender(MenuDelegate):
 			try: 
 
 				while True:
-					if ((time.time() - start_time) > 30): 
+					if ((time.time() - start_time) > 30) and (self.machine_state == STATE_RUNNING): 
 						self.machine_state = STATE_SLEEPING
 						OLED.Clear_Screen()
 					if GPIO.event_detected(LEFT_BTN_PIN):
