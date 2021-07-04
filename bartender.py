@@ -338,6 +338,7 @@ class Bartender(MenuDelegate):
 			thread.start()
 
 		# start the progress bar
+		print("maxtime: " + str(maxtime))
 		self.progressBar(maxTime)
 
 		# wait for threads to finish
