@@ -234,8 +234,6 @@ class Bartender(MenuDelegate):
 		# start the progress bar - something isn't right with the progress bar. it lasts sigificantly longer than the pumping
 #		self.progressBar(waitTime)
 
-		self.
-
 		# wait for threads to finish
 		for thread in pumpThreads:
 			thread.join()
@@ -320,7 +318,7 @@ class Bartender(MenuDelegate):
 		# cancel any button presses while the drink is being made
 		# self.stopInterrupts()
 		self.prev_machine_state = self.machine_state
-		self.machine_state = STATE_RUNNING
+		self.machine_state = STATE_POURING
 
 		# launch a thread to control lighting
 #		lightsThread = threading.Thread(target=self.cycleLights)
@@ -351,9 +349,13 @@ class Bartender(MenuDelegate):
 		for thread in pumpThreads:
 			thread.join()
 
-		self.machine_state.STATE_POUR_FINISHED
+		self.machine_state = STATE_POUR_FINISHED
+
+		self.menuContext.showMenu()
 
 		time.sleep(2)
+
+		self.machine_state = STATE_WAITING
 
 		# show the main menu
 		self.menuContext.showMenu()
@@ -386,8 +388,8 @@ class Bartender(MenuDelegate):
 				print("LEFT button press advanced menu")
 			else:
 				print("ignored LEFT button press")
-			self.machine_state = STATE_WAITING
-			self.prev_machine_state = STATE_WAITING
+		self.machine_state = STATE_WAITING
+		self.prev_machine_state = STATE_WAITING
 
 	def right_btn(self, ctx):
 		if self.machine_state != STATE_RUNNING:
@@ -402,8 +404,8 @@ class Bartender(MenuDelegate):
 				print("RIGHT button press selected menu item")
 			else:
 				print("ignored RIGHT button press")
-			self.machine_state = STATE_WAITING
-			self.prev_machine_state = STATE_WAITING
+		self.machine_state = STATE_WAITING
+		self.prev_machine_state = STATE_WAITING
 
 	def updateProgressBar(self, percent, x=15, y=15):
 		height = 10
