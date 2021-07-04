@@ -361,7 +361,7 @@ class Bartender(MenuDelegate):
 			self.start_time = time.time()
 			if self.machine_state == STATE_SLEEPING:
 				self.machine_state = STATE_RUNNING
-				self.menuContext.currentMenu()
+				self.menuContext.advance()
 			else:	
 				self.menuContext.advance()
 			print("Finished processing button press")
@@ -374,7 +374,7 @@ class Bartender(MenuDelegate):
 			self.start_time = time.time()
 			if self.machine_state == STATE_SLEEPING:
 				self.machine_state = STATE_RUNNING
-				self.menuContext.currentMenu()
+				self.menuContext.advance()
 			else:
 				self.menuContext.select()
 			print("Finished processing button press")
@@ -394,7 +394,7 @@ class Bartender(MenuDelegate):
 				self.draw.point((x + p_loc, h + y), fill=255)
 
 	def run(self):
-		self.startInterrupts()
+#		self.startInterrupts()
 
 		start_time = time.time()
 		
