@@ -3,30 +3,30 @@ drink_list = [
 	 {
 		"name": "Gin & Tonic",
 		"ingredients": {
-			"gin": 50,
-			"tonic": 149
+			"gin": 300,
+			"tonic": 900
 		}
 	}, {
 		"name": "Rum & Coke",
 		"ingredients": {
-			"rum": 50,
-			"coke": 150
+			"rum": 300,
+			"coke": 900
 		}
 	}, {
 		"name": "Long Island",
 		"ingredients": {
-			"gin": 15,
-			"rum": 15,
-			"vodka": 15,
-			"tequila": 15,
-			"coke": 100,
+			"gin": 90,
+			"rum": 90,
+			"vodka": 90,
+			"tequila": 90,
+			"coke": 180,
 			"oj": 30
 		}
 	}, {
 		"name": "Screwdriver",
 		"ingredients": {
-			"vodka": 50,
-			"oj": 150
+			"vodka": 300,
+			"oj": 900
 		}
 	}, {
 		"name": "Margarita",
@@ -37,20 +37,20 @@ drink_list = [
 	}, {
 		"name": "Gin & Juice",
 		"ingredients": {
-			"gin": 50,
-			"oj": 150
+			"gin": 300,
+			"oj": 900
 		}
 	}, {
 		"name": "Vodka Lemonade",
 		"ingredients": {
-			"vodka": 50,
-			"lemonade": 150
+			"vodka": 300,
+			"lemonade": 900
 		}
 	}, {
 		"name": "Tequila Sunrise",
 		"ingredients": {
-			"tequila": 50,
-			"oj": 150
+			"tequila": 300,
+			"oj": 900
 		}
 	}
 ]

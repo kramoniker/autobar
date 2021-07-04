@@ -397,7 +397,7 @@ class Bartender(MenuDelegate):
 				print("ignored LEFT button press")
 		self.machine_state = STATE_WAITING
 		self.prev_machine_state = STATE_WAITING
-
+	
 	def right_btn(self, ctx):
 		if self.machine_state != STATE_RUNNING:
 			self.prev_machine_state = self.machine_state
