@@ -395,7 +395,7 @@ class Bartender(MenuDelegate):
 	def run(self):
 #		self.startInterrupts()
 
-		start_time = time.time()
+		self.start_time = time.time()
 		
 		# main loop
 		try:
@@ -403,17 +403,15 @@ class Bartender(MenuDelegate):
 			try: 
 
 				while True:
-					if ((time.time() - start_time) > SLEEP_TIMEOUT) and (self.machine_state == STATE_RUNNING): 
+					if ((time.time() - self.start_time) > SLEEP_TIMEOUT) and (self.machine_state == STATE_RUNNING): 
 						self.machine_state = STATE_SLEEPING
 						OLED.Clear_Screen()
-					if GPIO.event_detected(LEFT_BTN_PIN):
-						start_time = time.time()
+					if GPIO.event_detected(LEFT_BTN_PIN, bouncetime=200):
+						self.start_time = time.time()
 						self.left_btn(False)
-						time.sleep(.2)
-					if GPIO.event_detected(RIGHT_BTN_PIN):
-						start_time = time.time()
+					if GPIO.event_detected(RIGHT_BTN_PIN, bouncetime=200):
+						self.start_time = time.time()
 						self.right_btn(False)
-						time.sleep(.2)
 #					letter = input(">")
 #					if letter == "l":
 #						self.left_btn(False)
