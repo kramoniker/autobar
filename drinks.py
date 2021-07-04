@@ -3,54 +3,54 @@ drink_list = [
 	 {
 		"name": "Gin & Tonic",
 		"ingredients": {
-			"gin": 300,
-			"tonic": 900
+			"gin": 600,
+			"tonic": 1800
 		}
 	}, {
 		"name": "Rum & Coke",
 		"ingredients": {
-			"rum": 300,
-			"coke": 900
+			"rum": 600,
+			"coke": 1800
 		}
 	}, {
 		"name": "Long Island",
 		"ingredients": {
-			"gin": 90,
-			"rum": 90,
-			"vodka": 90,
-			"tequila": 90,
-			"coke": 180,
-			"oj": 30
+			"gin": 1800,
+			"rum": 180,
+			"vodka": 180,
+			"tequila": 180,
+			"coke": 360,
+			"oj": 360
 		}
 	}, {
 		"name": "Screwdriver",
 		"ingredients": {
-			"vodka": 300,
-			"oj": 900
+			"vodka": 600,
+			"oj": 1800
 		}
 	}, {
 		"name": "Margarita",
 		"ingredients": {
-			"tequila": 50,
-			"mmix": 150
+			"tequila": 600,
+			"mmix": 1800
 		}
 	}, {
 		"name": "Gin & Juice",
 		"ingredients": {
-			"gin": 300,
-			"oj": 900
+			"gin": 600,
+			"oj": 1800
 		}
 	}, {
 		"name": "Vodka Lemonade",
 		"ingredients": {
-			"vodka": 300,
-			"lemonade": 900
+			"vodka": 600,
+			"lemonade": 1800
 		}
 	}, {
 		"name": "Tequila Sunrise",
 		"ingredients": {
-			"tequila": 300,
-			"oj": 900
+			"tequila": 600,
+			"oj": 1800
 		}
 	}
 ]
@@ -64,5 +64,6 @@ drink_options = [
 	{"name": "Coke", "value": "coke"},
 	{"name": "Orange Juice", "value": "oj"},
 	{"name": "Margarita Mix", "value": "mmix"},
-	{"name": "Lemonade", "value": "lemonade"}
+	{"name": "Lemonade", "value": "lemonade"},
+	{"name": "Cranberry Juice", "value": "cranberry"}
 ]
