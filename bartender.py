@@ -79,8 +79,8 @@ class Bartender(MenuDelegate):
 		GPIO.setup(self.btn1Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 		GPIO.setup(self.btn2Pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-		GPIO.add_event_detect(LEFT_BTN_PIN, GPIO.FALLING)
-		GPIO.add_event_detect(RIGHT_BTN_PIN, GPIO.FALLING)
+		GPIO.add_event_detect(LEFT_BTN_PIN, GPIO.FALLING, callback=self.left_btn, bouncetime=100)
+		GPIO.add_event_detect(RIGHT_BTN_PIN, GPIO.FALLING, callback=self.right_btn, bouncetime=100)
 
 		# configure screen
 		spi_bus = 0
@@ -365,6 +365,7 @@ class Bartender(MenuDelegate):
 			else:	
 				self.menuContext.advance()
 			print("Finished processing button press")
+		self.start_time = time.time()
 		self.running = False
 
 	def right_btn(self, ctx):
@@ -377,6 +378,7 @@ class Bartender(MenuDelegate):
 			else:
 				self.menuContext.select()
 			print("Finished processing button press")
+		self.start_time = time.time()
 		self.running = False
 
 	def updateProgressBar(self, percent, x=15, y=15):
@@ -406,12 +408,10 @@ class Bartender(MenuDelegate):
 					if ((time.time() - self.start_time) > SLEEP_TIMEOUT) and (self.machine_state == STATE_RUNNING): 
 						self.machine_state = STATE_SLEEPING
 						OLED.Clear_Screen()
-					if GPIO.event_detected(LEFT_BTN_PIN, bouncetime=200):
-						self.start_time = time.time()
-						self.left_btn(False)
-					if GPIO.event_detected(RIGHT_BTN_PIN, bouncetime=200):
-						self.start_time = time.time()
-						self.right_btn(False)
+#					if GPIO.event_detected(LEFT_BTN_PIN, bouncetime=200):
+#						self.left_btn(False)
+#					if GPIO.event_detected(RIGHT_BTN_PIN, bouncetime=200):
+#						self.right_btn(False)
 #					letter = input(">")
 #					if letter == "l":
 #						self.left_btn(False)
