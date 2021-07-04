@@ -65,7 +65,7 @@ WRAPPER = textwrap.TextWrapper(width=13)
 
 class Bartender(MenuDelegate): 
 	def __init__(self):
-		self.running = False
+		self.machine_state = STATE_INITIALIZING
 
 		# set the oled screen height
 		self.screen_width = SCREEN_WIDTH
@@ -217,7 +217,7 @@ class Bartender(MenuDelegate):
 
 		# cancel any button presses while the drink is being made
 		# self.stopInterrupts()
-		self.running = True
+		self.machine_state = STATE_RUNNING
 
 		for pump in self.pump_configuration.keys():
 			pump_t = threading.Thread(target=self.pour, args=(self.pump_configuration[pump]["pin"], waitTime))
@@ -310,7 +310,7 @@ class Bartender(MenuDelegate):
 	def makeDrink(self, drink, ingredients):
 		# cancel any button presses while the drink is being made
 		# self.stopInterrupts()
-		self.running = True
+		self.machine_state = STATE_RUNNING
 
 		# launch a thread to control lighting
 #		lightsThread = threading.Thread(target=self.cycleLights)
@@ -354,32 +354,32 @@ class Bartender(MenuDelegate):
 
 		# reenable interrupts
 		# self.startInterrupts()
-		self.running = False
+		self.machine_state = STATE_WAITING
 
 	def left_btn(self, ctx):
-		print("LEFT_BTN pressed")
-		prev_machine_state = self.machine_state
-		time.sleep(0.05)
-		self.machine_state = STATE_RUNNING
-		self.start_time = time.time()
-		if (prev_machine_state == STATE_SLEEPING) or (prev_machine_state == STATE_WAITING):
-			self.menuContext.advance()
-		print("Finished processing button press")
-		self.machine_state = STATE_WAITING
-		
-		self.machine_state = STATE_WAITING
-
-	def right_btn(self, ctx):
-		print("RIGHT_BTN pressed")
 		prev_machine_state = self.machine_state
 		time.sleep(0.05)
 		self.machine_state = STATE_RUNNING
 		self.start_time = time.time()
 		if (prev_machine_state == STATE_SLEEPING):
+			self.menuContext.showMenu()
+		elif (prev_machine_state == STATE_WAITING):
 			self.menuContext.advance()
+		print("Finished processing LEFT button press")
+		self.machine_state = STATE_WAITING
+		
+		self.machine_state = STATE_WAITING
+
+	def right_btn(self, ctx):
+		prev_machine_state = self.machine_state
+		time.sleep(0.05)
+		self.machine_state = STATE_RUNNING
+		self.start_time = time.time()
+		if (prev_machine_state == STATE_SLEEPING):
+			self.menuContext.showMenu()
 		elif (prev_machine_state == STATE_WAITING):
 			self.menuContext.select()
-		print("Finished processing button press")
+		print("Finished processing RIGHT button press")
 		self.machine_state = STATE_WAITING
 
 	def updateProgressBar(self, percent, x=15, y=15):
