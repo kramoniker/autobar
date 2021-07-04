@@ -409,9 +409,11 @@ class Bartender(MenuDelegate):
 					if GPIO.event_detected(LEFT_BTN_PIN):
 						start_time = time.time()
 						self.left_btn(False)
+						time.sleep(.2)
 					if GPIO.event_detected(RIGHT_BTN_PIN):
 						start_time = time.time()
 						self.right_btn(False)
+						time.sleep(.2)
 #					letter = input(">")
 #					if letter == "l":
 #						self.left_btn(False)
