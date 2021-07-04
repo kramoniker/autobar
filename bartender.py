@@ -305,7 +305,7 @@ class Bartender(MenuDelegate):
 		GPIO.output(pin, GPIO.HIGH)
 
 	def progressBar(self, waitTime):
-		interval = waitTime / 100.0
+		interval = waitTime / 1000
 		for x in range(1, 101):
 			self.updateProgressBar(x, y=35)
 			OLED.Display_Image(self.image)
