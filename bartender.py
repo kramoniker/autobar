@@ -364,7 +364,7 @@ class Bartender(MenuDelegate):
 		self.display_machine_state = self.machine_state
 
 		# show the main menu
-		self.menuContext.showMenu()
+		#self.menuContext.showMenu()
 
 		# stop the light thread
 #		lightsThread.do_run = False
@@ -374,7 +374,7 @@ class Bartender(MenuDelegate):
 #		self.lightsEndingSequence()
 
 		# sleep for a couple seconds to make sure the interrupts don't get triggered
-		time.sleep(2);
+		#time.sleep(2);
 
 		# reenable interrupts
 		# self.startInterrupts()
