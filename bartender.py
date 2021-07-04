@@ -33,6 +33,7 @@ LEFT_PIN_BOUNCE = 200
 RIGHT_BTN_PIN = 5
 RIGHT_PIN_BOUNCE = 200
 
+STATE_UNKNOWN      = -1
 STATE_INITIALIZING = 0
 STATE_RUNNING      = 1
 STATE_WAITING      = 2
@@ -40,6 +41,7 @@ STATE_SLEEPING     = 3
 SLEEP_TIMEOUT      = 30
 
 machine_state       = STATE_INITIALIZING
+prev_machine_state  = STATE_UNKNOWN
 start_time          = time.time()
 
 NUMBER_NEOPIXELS = 45
@@ -357,30 +359,30 @@ class Bartender(MenuDelegate):
 		self.machine_state = STATE_WAITING
 
 	def left_btn(self, ctx):
-		prev_machine_state = self.machine_state
+		self.prev_machine_state = self.machine_state
 		time.sleep(0.05)
 		self.machine_state = STATE_RUNNING
 		self.start_time = time.time()
-		if (prev_machine_state == STATE_SLEEPING):
+		if (self.prev_machine_state == STATE_SLEEPING):
 			self.menuContext.showMenu()
-		elif (prev_machine_state == STATE_WAITING):
+		elif (self.prev_machine_state == STATE_WAITING):
 			self.menuContext.advance()
 		print("Finished processing LEFT button press")
 		self.machine_state = STATE_WAITING
-		
-		self.machine_state = STATE_WAITING
+		self.prev_machine_state = STATE_WAITING
 
 	def right_btn(self, ctx):
-		prev_machine_state = self.machine_state
+		self.prev_machine_state = self.machine_state
 		time.sleep(0.05)
 		self.machine_state = STATE_RUNNING
 		self.start_time = time.time()
-		if (prev_machine_state == STATE_SLEEPING):
+		if (self.prev_machine_state == STATE_SLEEPING):
 			self.menuContext.showMenu()
-		elif (prev_machine_state == STATE_WAITING):
+		elif (self.prev_machine_state == STATE_WAITING):
 			self.menuContext.select()
 		print("Finished processing RIGHT button press")
 		self.machine_state = STATE_WAITING
+		self.prev_machine_state = STATE_WAITING
 
 	def updateProgressBar(self, percent, x=15, y=15):
 		height = 10
