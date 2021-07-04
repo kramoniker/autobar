@@ -360,8 +360,8 @@ class Bartender(MenuDelegate):
 
 	def left_btn(self, ctx):
 		self.prev_machine_state = self.machine_state
-		time.sleep(0.05)
 		self.machine_state = STATE_RUNNING
+		time.sleep(0.05)
 		self.start_time = time.time()
 		if (self.prev_machine_state == STATE_SLEEPING):
 			self.menuContext.showMenu()
@@ -376,8 +376,8 @@ class Bartender(MenuDelegate):
 
 	def right_btn(self, ctx):
 		self.prev_machine_state = self.machine_state
-		time.sleep(0.05)
 		self.machine_state = STATE_RUNNING
+		time.sleep(0.05)
 		self.start_time = time.time()
 		if (self.prev_machine_state == STATE_SLEEPING):
 			self.menuContext.showMenu()
