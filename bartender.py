@@ -360,6 +360,7 @@ class Bartender(MenuDelegate):
 
 		# reenable interrupts
 		# self.startInterrupts()
+		self.start_time    = time.time()
 		self.machine_state = STATE_WAITING
 
 	def left_btn(self, ctx):
